@@ -33,7 +33,7 @@ def _prepare_readouts(circuit: QuantumCircuit) -> None:
     """
 
     measures: List[CircuitInstruction] = [d for d in circuit.data if isinstance(d[0], Measure)]
-    readout_names: List[str] = list({clbit.register.name for m in measures for clbit in m.clbits})
+    readout_names: List[str] = list({clbit._register.name for m in measures for clbit in m.clbits})
 
     num_readouts = len(readout_names)
 

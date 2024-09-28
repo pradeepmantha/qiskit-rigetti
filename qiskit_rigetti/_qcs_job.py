@@ -29,9 +29,10 @@ from qiskit.providers.models import QasmBackendConfiguration
 from qiskit.qobj import QobjExperimentHeader
 from qiskit.result import Result
 from qiskit.result.models import ExperimentResult, ExperimentResultData
+import qiskit.qasm2
 
-from .hooks.pre_compilation import PreCompilationHook
-from .hooks.pre_execution import PreExecutionHook
+from qiskit_rigetti.hooks.pre_compilation import PreCompilationHook
+from qiskit_rigetti.hooks.pre_execution import PreExecutionHook
 
 Response = Union[QVMExecuteResponse, QPUExecuteResponse]
 
@@ -85,7 +86,7 @@ class RigettiQCSJob(JobV1):
 
     def _start_circuit(self, circuit: QuantumCircuit) -> Response:
         shots = self._options["shots"]
-        qasm = circuit.qasm()
+        qasm = qiskit.qasm2.dumps(circuit)
         qasm = self._handle_barriers(qasm, circuit.num_qubits)
 
         before_compile: List[PreCompilationHook] = self._options.get("before_compile", [])
